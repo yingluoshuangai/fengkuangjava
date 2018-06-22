@@ -15,5 +15,16 @@ public class GenderTest {
         //将实例变量设为final，更方便，更安全点
         Gender2 g2 = Gender2.valueOf("FEMALE");
         System.out.println(g2 + "代表的值： " + g2.getName());
+
+        //测试实现接口的枚举类
+        Gender3 g3 = Gender3.valueOf("MALE");
+        Gender3 g4 = Gender3.valueOf("FEMALE");
+        g3.info();
+        g4.info();
+        Gender4 g5 = Gender4.valueOf("MALE");
+        Gender4 g6 = Gender4.valueOf("FEMALE");
+        g5.info();
+        g6.info();
     }
+
 }
