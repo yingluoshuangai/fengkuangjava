@@ -1,0 +1,21 @@
+
+
+
+
+1. public static <T> int compare(T a, T b, Comparator<? super T> c)
+Returns 0 if the arguments are identical and c.compare(a, b) otherwise. Consequently, if both arguments are null 0 is returned.
+Note that if one of the arguments is null, a NullPointerException may or may not be thrown depending on what ordering policy, if any, the Comparator chooses to have for null values.
+如果两个参数内存地址相同返回0，否则调用c.compare(a,b)方法。因此，如果两个参数都是null也返回0.
+注意，如果其中一个参数是null，可能会抛出NullpointerException，取决于c.compare(a,b)方法，如果可能，c.compare(a,b)应该选择处理null值。
+
+2. public static boolean deepEquals(Object a,Object b)
+Returns true if the arguments are deeply equal to each other and false otherwise.
+Two null values are deeply equal.
+If both arguments are arrays, the algorithm in Arrays.deepEquals is used to determine equality.
+Otherwise, equality is determined by using the equals method of the first argument.
+如果两个参数彼此深度相等返回true，否则false
+如果两个参数都是null，则返回true
+如果两个参数都是arrays类型，使用Arrays类的deepEquals方法判断是否相等
+否则通过调用第一个参数的equals方法，判断是否相等
+
+
