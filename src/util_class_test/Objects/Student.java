@@ -21,6 +21,14 @@ public class Student {
         return super.equals(obj);
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

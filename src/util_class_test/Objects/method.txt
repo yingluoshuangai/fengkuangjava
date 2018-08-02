@@ -1,4 +1,7 @@
-
+Objects是Object的工具类。
+Objects对null进行了很多特殊处理。
+参考：java.util.Objects 简介   https://blog.csdn.net/lkforce/article/details/56289349
+java.util.Objects工具类示例    https://blog.csdn.net/yamaxifeng_132/article/details/53538903
 
 
 
@@ -18,4 +21,48 @@ Otherwise, equality is determined by using the equals method of the first argume
 如果两个参数都是arrays类型，使用Arrays类的deepEquals方法判断是否相等
 否则通过调用第一个参数的equals方法，判断是否相等
 
+3. public static boolean equals(Object a, Object b)
+和deepEquals方法相同，只不过少了对集合的处理
 
+4. public static int hash(Object... values)
+Generates a hash code for a sequence of input values. The hash code is generated as if all the input values were placed into an array, and that array were hashed by calling Arrays.hashCode(Object[]).
+This method is useful for implementing Object.hashCode() on objects containing multiple fields. For example, if an object that has three fields, x, y, and z, one could write:
+ @Override public int hashCode() {
+     return Objects.hash(x, y, z);
+ }
+Warning: When a single object reference is supplied, the returned value does not equal the hash code of that object reference. This value can be computed by calling hashCode(Object).
+生成输入序列的hashCode。这个hashCode就好像是把输入值封装成一个array，然后调用Arrays.hashCode(Object[])生成hashCode。
+这个方法有效解决了Object.hashCode()不能处理复数参数的问题。
+警告：当只提供一个参数，这个返回的hashCode不等于这个参数调用Object.hashCode()的值，依然是通过Arrays.hashCode(Object[])来生成hash值。
+1. 说明文档没看懂，尤其是warning，更是不明白为什么，按照我的理解，这里的“ hashCode(Object)”应该指向Arrays里的方法，但是帮助文档里，是指向Objects的hashCode(Object)。
+2. Arrays里只有Arrays.hashCode(Object[]), 没有"Arrays.hashCode(Object)",这个方法，那如果Objects.hash(Object[]),只传一个对象，为什么不报错。难道它会自动将Object封装成Object[]吗？
+3. 源代码就是调用Arrays.hashCode()方法，那为什么要再用Objects封装一遍呢？直接调用Arrays不就行了。
+    public static int hash(Object... values) {
+          return Arrays.hashCode(values);
+    }
+4. 参考：https://blog.csdn.net/yuxiangaaaaa/article/details/53082932
+
+
+5. public static String toString(Object o)
+public static String toString(Object o, String nullDefault)
+第一个方法，就是调用对象的toString方法，如果对象为null，则输出"null"字符串
+第二个方法，就是调用对象的同String方法，如果对象为null，则将第二个参数输出。
+
+
+6.1 public static <T> T requireNonNull(T obj)
+Checks that the specified object reference is not null. This method is designed primarily for doing parameter validation in methods and constructors,
+检查指定对象引用是否null。这个方法被设计主要是用来在方法和构造器中确保参数不为null。
+如果对象不为null，返回对象本身。
+如果对象为null，抛出NullPointerException.
+6.2 public static <T> T requireNonNull(T obj, String message)
+跟上面的方法基本一样，只不过这个在抛出空指针异常时，会将第二个参数在异常中输出。
+适合对多个参数进行null值检验.
+第一个方法抛出NullPoninterException，没有详细信息。如果有多个参数，压根就不知道是那个参数为null。
+第二个方法抛出NullPoninterException,会将第二个参数展示在异常中，所以根据第二个参数就能确定那个为null。
+6.3 public static <T> T requireNonNull(T obj, Supplier<String> messageSupplier)
+Checks that the specified object reference is not null and throws a customized NullPointerException if it is.
+Unlike the method requireNonNull(Object, String), this method allows creation of the message to be deferred until after the null check is made. While this may confer a performance advantage in the non-null case, when deciding to call this method care should be taken that the costs of creating the message supplier are less than the cost of just creating the string message directly.
+检查指定的对象引用是否为null,如果为null则抛出一个自定义NullPointerException。
+这个方法与requireNonNull(Object, String)的不同是这个方法是在确认对象为null后，才生成错误信息。在对象不为null时，跟requireNonNull(Object, String)相比会有更高的性能。
+当决定使用这个方法时，应该注意通过supplier接口生成错误信息的花费低于直接生成string类型的错误信息。
+1. Supplier<String> messageSupplier是一个函数式接口，使用匿名内部类，来实现它。
