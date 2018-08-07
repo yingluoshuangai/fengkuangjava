@@ -9,7 +9,8 @@ import java.util.List;
  * @Author: AT
  * @Date: 2018/7/25
  * @Remark: Down to earth, you can look up at the stars
- * @Description:https://blog.csdn.net/qq_27093465/article/details/79154566
+ * @Description:
+ * 参考 ： https://blog.csdn.net/qq_27093465/article/details/79154566
  * 集合删除测试
  */
 public class CollectionDeleteTest {
@@ -50,9 +51,14 @@ public class CollectionDeleteTest {
         for( int i = 0 ; i < arrayList.size() ; i ++ ){
             if(arrayList.get(i).equals("路飞")){
                 arrayList.remove(i);
+                i --;//要对索引进行重新编排
             }
         }
         System.out.println("删除后结果:" + arrayList.toString());
+
+
+        //TODO 4. 错误的删除
+        //使用增强型for循环会直接报错。
 
 
     }
